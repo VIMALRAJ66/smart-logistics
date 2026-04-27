@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Truck Details</title>
+
+<style>
+body{
+margin:0;
+font-family:Arial;
+background:#f4f6f9;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+
+.card{
+width:400px;
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 6px 20px rgba(0,0,0,0.2);
+text-align:center;
+}
+
+h2{
+color:#0d6efd;
+margin-bottom:20px;
+}
+
+p{
+font-size:18px;
+margin:10px 0;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="card">
+
+<h2>🚛 Truck Live Monitoring</h2>
+
+<p><b>ID:</b> {{truck[0]}}</p>
+<p><b>Truck No:</b> {{truck[1]}}</p>
+<p><b>Driver:</b> {{truck[2]}}</p>
+<p><b>Type:</b> {{truck[3]}}</p>
+<p><b>Status:</b> {{truck[4]}}</p>
+
+</div>
+
+</body>
+</html>

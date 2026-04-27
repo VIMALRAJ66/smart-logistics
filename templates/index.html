@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Logistics | AI Powered Tracking</title>
+    <style>
+        body { margin: 0; font-family: 'Segoe UI', sans-serif; background: #0f172a; color: white; overflow-x: hidden; }
+        
+        /* Navbar */
+        .nav { display: flex; justify-content: space-between; padding: 20px 50px; align-items: center; background: rgba(15, 23, 42, 0.9); position: sticky; top: 0; backdrop-filter: blur(10px); z-index: 100; border-bottom: 1px solid #1e293b; }
+        .logo { font-size: 24px; font-weight: bold; color: #3b82f6; }
+        .logo span { color: white; }
+        .nav-links a { color: #94a3b8; text-decoration: none; margin-left: 30px; transition: 0.3s; }
+        .nav-links a:hover { color: white; }
+        .btn-login { background: #3b82f6; padding: 10px 25px; border-radius: 30px; color: white !important; font-weight: bold; }
+        .btn-login:hover { background: #2563eb; }
+
+        /* Hero Section */
+        .hero { height: 80vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: radial-gradient(circle at center, #1e293b 0%, #0f172a 70%); padding: 0 20px; }
+        h1 { font-size: 60px; margin: 0; background: -webkit-linear-gradient(#fff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        p.sub { font-size: 20px; color: #94a3b8; max-width: 600px; margin: 20px 0 40px 0; line-height: 1.6; }
+        .cta-btn { padding: 15px 40px; font-size: 18px; background: #3b82f6; color: white; border: none; border-radius: 50px; cursor: pointer; text-decoration: none; transition: 0.3s; box-shadow: 0 0 20px rgba(59, 130, 246, 0.5); }
+        .cta-btn:hover { transform: scale(1.05); box-shadow: 0 0 40px rgba(59, 130, 246, 0.7); }
+
+        /* Features */
+        .features { padding: 80px 50px; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; max-width: 1200px; margin: 0 auto; }
+        .card { background: #1e293b; padding: 40px; border-radius: 16px; border: 1px solid #334155; transition: 0.3s; }
+        .card:hover { transform: translateY(-10px); border-color: #3b82f6; }
+        .icon { font-size: 40px; margin-bottom: 20px; }
+        h3 { font-size: 22px; margin: 0 0 10px 0; }
+        p.desc { color: #94a3b8; line-height: 1.6; }
+
+        /* Stats Bar */
+        .stats { display: flex; justify-content: space-around; padding: 60px 0; background: #1e293b; border-top: 1px solid #334155; border-bottom: 1px solid #334155; margin-top: 50px; }
+        .stat-box { text-align: center; }
+        .stat-num { font-size: 40px; font-weight: bold; color: #3b82f6; }
+        .stat-label { color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; font-size: 12px; }
+
+        /* Footer */
+        footer { text-align: center; padding: 50px; color: #64748b; font-size: 14px; }
+    </style>
+</head>
+<body>
+
+    <nav class="nav">
+        <div class="logo">Smart<span>Logistics</span></div>
+        <div class="nav-links">
+            <a href="#">Solutions</a>
+            <a href="#">Pricing</a>
+            <a href="#">Contact</a>
+            <a href="/login" class="btn-login">Staff Login</a>
+        </div>
+    </nav>
+
+    <div class="hero">
+        <h1>The Future of Fleet Management</h1>
+        <p class="sub">AI-powered tracking, real-time analytics, and secure database management for the modern supply chain.</p>
+        <a href="/login" class="cta-btn">Launch Dashboard</a>
+    </div>
+
+    <div class="stats">
+        <div class="stat-box">
+            <div class="stat-num">10k+</div>
+            <div class="stat-label">Trucks Tracked</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-num">99.9%</div>
+            <div class="stat-label">Uptime</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-num">24/7</div>
+            <div class="stat-label">AI Monitoring</div>
+        </div>
+    </div>
+
+    <div class="features">
+        <div class="card">
+            <div class="icon">🛰️</div>
+            <h3>Real-Time GPS</h3>
+            <p class="desc">Track your entire fleet with precision. Our text-based simulation engine provides instant location updates.</p>
+        </div>
+        <div class="card">
+            <div class="icon">🔒</div>
+            <h3>Secure Database</h3>
+            <p class="desc">Enterprise-grade MySQL integration ensures your data is safe, accessible, and always in sync.</p>
+        </div>
+        <div class="card">
+            <div class="icon">🤖</div>
+            <h3>AI Vision</h3>
+            <p class="desc">Integrated OpenCV camera modules for automated parcel counting and security scanning.</p>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2024 Smart Logistics Inc. | System Version 2.0 (Web Service Edition)
+    </footer>
+
+</body>
+</html>

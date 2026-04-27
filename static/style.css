@@ -1,0 +1,17 @@
+body{
+font-family: Arial;
+background:#0f172a;
+color:white;
+}
+
+.card{
+background:#1f2937;
+border-radius:12px;
+padding:20px;
+}
+
+table{
+background:#1f2937;
+border-radius:10px;
+overflow:hidden;
+}
