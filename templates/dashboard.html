@@ -2,7 +2,6 @@
 <html>
 <head>
     <title>Admin Dashboard</title>
-    <!-- Load Chart.js for Graphs -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body { margin: 0; font-family: 'Segoe UI', sans-serif; background: #0f172a; color: white; }
@@ -78,7 +77,7 @@
             </div>
         </div>
 
-        <!-- GRAPH CHART (NEW!) -->
+        <!-- GRAPH CHART -->
         <div class="chart-container">
             <canvas id="myChart"></canvas>
         </div>
@@ -98,13 +97,13 @@
             <tbody>
                 {% for row in rows %}
                 <tr>
-                    <td>{{ row[1] }}</td>
-                    <td>{{ row[2] }}</td>
-                    <td>{{ row[3] }}</td>
+                    <td>{{ row['truck_no'] }}</td>
+                    <td>{{ row['driver'] }}</td>
+                    <td>{{ row['type'] }}</td>
                     <td>
-                        <span style="background: #064e3b; color: #34d399; padding: 3px 10px; border-radius: 10px; font-size: 12px;">{{ row[4] }}</span>
+                        <span style="background: #064e3b; color: #34d399; padding: 3px 10px; border-radius: 10px; font-size: 12px;">{{ row['status'] }}</span>
                     </td>
-                    <td><a href="/map/{{ row[0] }}" class="btn-track">Track Live</a></td>
+                    <td><a href="/map/{{ row['id'] }}" class="btn-track">Track Live</a></td>
                 </tr>
                 {% endfor %}
             </tbody>

@@ -2,22 +2,29 @@ import os
 import random
 from flask import Flask, render_template, request, redirect, url_for, session
 import mysql.connector
+from werkzeug.security import generate_password_hash, check_password_hash
+
 
 app = Flask(__name__)
 
-# 🔒 SECURITY: Required for sessions on Render
+
+# 🔒 SECURITY: Use environment variable for secret key
 app.secret_key = os.environ.get('SECRET_KEY', 'smart_logistics_2026_key')
+app.config['SESSION_COOKIE_SECURE'] = False  # Set True in production with HTTPS
+app.config['SESSION_COOKIE_HTTPONLY'] = True
+
 
 # ---------------- DATABASE CONNECTION (AIVEN CLOUD) ----------------
 db_config = {
-    'host': 'logistics-db-rajssv004-c5d2.i.aivencloud.com',
-    'port': 19272,
-    'user': 'avnadmin',
-    'password': 'AVNS_P-1ic66btBVDKEUFdn7',
-    'database': 'defaultdb',
-    'ssl_ca': 'ca.pem',     # This must match the file name you upload
+    'host': os.environ.get('DB_HOST', 'logistics-db-rajssv004-c5d2.i.aivencloud.com'),
+    'port': int(os.environ.get('DB_PORT', 19272)),
+    'user': os.environ.get('DB_USER', 'avnadmin'),
+    'password': os.environ.get('DB_PASSWORD', 'AVNS_P-1ic66btBVDKEUFdn7'),
+    'database': os.environ.get('DB_NAME', 'defaultdb'),
+    'ssl_ca': 'ca.pem',
     'ssl_verify_cert': True
 }
+
 
 def get_db_connection():
     try:
@@ -27,11 +34,14 @@ def get_db_connection():
         print(f"❌ Database Connection Error: {e}")
         return None
 
+
 # ---------------- ROUTES ----------------
+
 
 @app.route('/')
 def home():
     return render_template("index.html")
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login_page():
@@ -42,11 +52,11 @@ def login_page():
         conn = get_db_connection()
         if conn:
             cur = conn.cursor(dictionary=True)
-            cur.execute("SELECT * FROM users WHERE username=%s AND password=%s", (user, pwd))
+            cur.execute("SELECT * FROM users WHERE username=%s", (user,))
             account = cur.fetchone()
             conn.close()
 
-            if account:
+            if account and check_password_hash(account['password'], pwd):
                 session['loggedin'] = True
                 session['username'] = user
                 return redirect(url_for('dashboard'))
@@ -55,24 +65,33 @@ def login_page():
             
     return render_template("login.html")
 
+
 @app.route('/register', methods=['POST'])
 def register():
     new_user = request.form.get('new_user')
     new_pass = request.form.get('new_pass')
     
+    if not new_user or not new_pass:
+        return render_template("login.html", error="❌ Username and password required")
+    
+    hashed_password = generate_password_hash(new_pass)
+    
     conn = get_db_connection()
     if conn:
         try:
             cur = conn.cursor()
-            cur.execute("INSERT INTO users (username, password) VALUES (%s, %s)", (new_user, new_pass))
+            cur.execute("INSERT INTO users (username, password) VALUES (%s, %s)", (new_user, hashed_password))
             conn.commit()
             msg = "✅ Account Created! Please Login."
+        except mysql.connector.IntegrityError:
+            msg = "❌ Username already exists"
         except Exception as e:
             msg = f"❌ Error: {e}"
         finally:
             conn.close()
         return render_template("login.html", error=msg)
     return "Database Error"
+
 
 @app.route('/dashboard')
 def dashboard():
@@ -97,8 +116,12 @@ def dashboard():
     }
     return render_template("dashboard.html", rows=rows, v=values)
 
+
 @app.route('/add', methods=['POST'])
 def add():
+    if 'loggedin' not in session:
+        return redirect(url_for('login_page'))
+    
     conn = get_db_connection()
     if conn:
         cur = conn.cursor()
@@ -108,8 +131,12 @@ def add():
         conn.close()
     return redirect(url_for('dashboard'))
 
+
 @app.route('/map/<int:id>')
 def map_view(id):
+    if 'loggedin' not in session:
+        return redirect(url_for('login_page'))
+    
     conn = get_db_connection()
     if conn:
         cur = conn.cursor(dictionary=True)
@@ -126,11 +153,12 @@ def map_view(id):
             return render_template("map.html", truck=truck, s=stats)
     return "Truck Not Found", 404
 
+
 @app.route('/logout')
 def logout():
     session.clear()
     return redirect(url_for('home'))
 
+
 if __name__ == '__main__':
-    # On local, it uses this. On Render, gunicorn takes over.
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=5000, debug=True)

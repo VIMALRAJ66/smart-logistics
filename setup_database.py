@@ -1,14 +1,15 @@
 import mysql.connector
+from werkzeug.security import generate_password_hash
 
 # CONNECT TO YOUR AIVEN CLOUD DATABASE
 config = {
-    'host': 'logistics-db-rajssv004-c5d2.i.aivencloud.com', # .i. for India
+    'host': 'logistics-db-rajssv004-c5d2.i.aivencloud.com',
     'port': 19272,
     'user': 'avnadmin',
-    # FIXED: Changed 'l' (lion) to '1' (one)
     'password': 'AVNS_P-1ic66btBVDKEUFdn7', 
     'database': 'defaultdb',
-    'ssl_disabled': False
+    'ssl_ca': 'ca.pem',
+    'ssl_verify_cert': True
 }
 
 try:
@@ -21,7 +22,7 @@ try:
     CREATE TABLE IF NOT EXISTS users (
         id INT AUTO_INCREMENT PRIMARY KEY,
         username VARCHAR(50) UNIQUE,
-        password VARCHAR(100)
+        password VARCHAR(255)
     );""")
 
     # 2. CREATE TRUCKS TABLE
@@ -34,8 +35,9 @@ try:
         status VARCHAR(20)
     );""")
 
-    # 3. CREATE ADMIN ACCOUNT
-    cursor.execute("INSERT IGNORE INTO users (username, password) VALUES ('admin', 'admin123')")
+    # 3. CREATE ADMIN ACCOUNT WITH HASHED PASSWORD
+    hashed_pwd = generate_password_hash('admin123')
+    cursor.execute("INSERT IGNORE INTO users (username, password) VALUES (%s, %s)", ('admin', hashed_pwd))
     
     conn.commit()
     print("✅ SUCCESS! Tables created.")
